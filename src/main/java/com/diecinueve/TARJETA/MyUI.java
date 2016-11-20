@@ -20,7 +20,6 @@ public class MyUI extends UI {
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
-        
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
 
