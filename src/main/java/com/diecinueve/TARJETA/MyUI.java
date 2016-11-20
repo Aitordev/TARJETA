@@ -22,7 +22,7 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
         final TextField name = new TextField();
-        name.setCaption("Type your penis name here:");
+        name.setCaption("Type your waifu's name here:");
 
         Button button = new Button("Click Me");
         button.addClickListener( e -> {
