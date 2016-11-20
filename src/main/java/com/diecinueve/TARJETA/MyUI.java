@@ -2,15 +2,15 @@ package com.diecinueve.TARJETA;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.diecinueve.TARJETA.login.SimpleLoginMainView;
+import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 
 @Theme("mytheme")
@@ -20,21 +20,38 @@ public class MyUI extends UI {
 
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
-        final TextField name = new TextField();
-        name.setCaption("Type your waifu's name here:");
+        new Navigator(this, this);
+        getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);//
+        getNavigator().addView(SimpleLoginMainView.NAME, SimpleLoginMainView.class);
+        getNavigator().addViewChangeListener(new ViewChangeListener() {
+			private static final long serialVersionUID = 8868055238974896938L;
 
-        Button button = new Button("Click Me");
-        button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
+			@Override
+            public boolean beforeViewChange(ViewChangeEvent event) {
+
+                // Mirar si esta loggeado
+                boolean isLoggedIn = getSession().getAttribute("user") != null;
+                boolean isLoginView = event.getNewView() instanceof SimpleLoginView;
+
+                if (!isLoggedIn && !isLoginView) {
+                    // Redirecionar a login si no login
+                    getNavigator().navigateTo(SimpleLoginView.NAME);
+                    return false;
+
+                } else if (isLoggedIn && isLoginView) {
+                    // si alguien quiere login y ya login el entonces a la mierda
+                    return false;
+                }
+
+                return true;
+            }
+
+            @Override
+            public void afterViewChange(ViewChangeEvent event) {
+
+            }
         });
-        
-        layout.addComponents(name, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        
-        setContent(layout);
+
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
