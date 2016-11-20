@@ -18,6 +18,7 @@ public class MyUI extends UI {
 
 	private static final long serialVersionUID = 7631387814122037077L;
 
+	//Toma cambio
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
