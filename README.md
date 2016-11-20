@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 TARJETA
 ==============
 
@@ -50,3 +51,7 @@ Using Vaadin pre-releases
 
 If Vaadin pre-releases are not enabled by default, use the Maven parameter
 "-P vaadin-prerelease" or change the activation default value of the profile in pom.xml .
+=======
+# TARJETA
+Proyecto IISS II
+>>>>>>> f2cb3f192d688bc773913bf0f1539b3602f90327
