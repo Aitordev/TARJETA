@@ -3,6 +3,17 @@ package com.diecinueve.TARJETA.Classes;
 import com.diecinueve.TARJETA.DatabaseOp.DataBaseOperations;
 
 public class Shop {
+	
+	public String nombreTienda;
+	
+	public Shop() {
+		super();
+	}
+
+	public Shop(String nombreTienda) {
+		super();
+		this.nombreTienda = nombreTienda;
+	}
 
 
 	public void altaTienda(String nombreTienda) throws Exception{

@@ -21,7 +21,7 @@ public class DataBaseOperations {
 	private static PreparedStatement stmt = null;
 
 	private static List<User> users = new ArrayList<User>(); 
-
+	private static List<Shop> shops = new ArrayList<Shop>(); 
 	
 	
 	//*****************************LOGIN METHODS***********************************
@@ -67,13 +67,20 @@ public class DataBaseOperations {
 //		if(checkShopExists(shopName))
 //			throw new Exception("Tienda ya existe");
 //		InsertMethod("Tiendas", shopName);
-		
+		shops.add(new Shop(shopName));
 	}
 	
 	public static void bajaTienda(String shopName) throws Exception{
-		if(!checkShopExists(shopName))
-			throw new Exception("Tienda no existe");
-		DeleteMethod("Tiendas", "nombre", shopName);
+//		if(!checkShopExists(shopName))
+//			throw new Exception("Tienda no existe");
+//		DeleteMethod("Tiendas", "nombre", shopName);
+		for(int i = 0; i < shops.size(); i++){
+			Shop us = shops.get(i);
+			if(us.nombreTienda.equals(shopName) ){
+				shops.remove(i);
+				break;
+			}
+		}
 	}
 
 
