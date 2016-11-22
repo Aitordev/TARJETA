@@ -2,8 +2,9 @@ package com.diecinueve.TARJETA;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.diecinueve.TARJETA.login.SimpleLoginMainView;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
+import com.diecinueve.TARJETA.mainView.CommonWindow;
+import com.diecinueve.TARJETA.mainView.MainView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -22,7 +23,9 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         new Navigator(this, this);
         getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);//
-        getNavigator().addView(SimpleLoginMainView.NAME, SimpleLoginMainView.class);
+        getNavigator().addView(MainView.NAME, MainView.class);
+        getNavigator().addView(CommonWindow.NAME, CommonWindow.class);
+        getNavigator().setErrorView(SimpleLoginView.class);
         getNavigator().addViewChangeListener(new ViewChangeListener() {
 			private static final long serialVersionUID = 8868055238974896938L;
 

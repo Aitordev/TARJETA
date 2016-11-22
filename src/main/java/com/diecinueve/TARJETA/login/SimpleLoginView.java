@@ -1,6 +1,7 @@
 package com.diecinueve.TARJETA.login;
 
 import com.diecinueve.TARJETA.Classes.User;
+import com.diecinueve.TARJETA.mainView.MainView;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -24,21 +25,23 @@ public class SimpleLoginView extends CustomComponent implements View {
 	private static final long serialVersionUID = 7802656818550430070L;
 
 	public static final String NAME = "login";
-	private final TextField user;
+	private final TextField userText;
 	private final PasswordField password;
 	private final Button loginButton;
 	private final Button singInButton;
 	private static PasswordField passUser;
+	private static User user;
+
 	
 	public SimpleLoginView() {
 		setSizeFull();
-
+		user = new User();
 		// Create the user input field
-		user = new TextField("User:");
-		user.setWidth("300px");
-		user.setRequired(true);
-		user.setInputPrompt("Your Nick (ex. admin)");
-		user.setInvalidAllowed(false);
+		userText = new TextField("User:");
+		userText.setWidth("300px");
+		userText.setRequired(true);
+		userText.setInputPrompt("Your Nick (ex. admin)");
+		userText.setInvalidAllowed(false);
 
 		// Create the password input field
 		password = new PasswordField("Password:");
@@ -55,7 +58,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 		singInButton = new Button("Sing in");
 		
 		// Add both to a panel
-		VerticalLayout fields = new VerticalLayout(user, password, loginButton, singInButton);
+		VerticalLayout fields = new VerticalLayout(userText, password, loginButton, singInButton);
 		fields.setCaption("Please login to access the application.");
 		fields.setSpacing(true);
 		fields.setMargin(new MarginInfo(true, true, true, false));
@@ -74,19 +77,17 @@ public class SimpleLoginView extends CustomComponent implements View {
 
 			public void buttonClick(ClickEvent event) {
 
-				if (!user.isValid() || !password.isValid()) {
+				if (!userText.isValid() || !password.isValid()) {
 					return;
 				}
 
-				String username = user.getValue();
+				String username = userText.getValue();
 				String pass = password.getValue();
-				
-				User user = new User();
-
+			
 				try {
 					if (user.login(username,pass)) {
 						getSession().setAttribute("user", username);
-						getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);//
+						getUI().getNavigator().navigateTo(MainView.NAME);//
 					} else {
 						// contraseña mal
 						password.setValue(null);
@@ -137,6 +138,32 @@ public class SimpleLoginView extends CustomComponent implements View {
 				register.setContent(fields);
 				register.center();
 				UI.getCurrent().addWindow(register);
+				
+				accept.addClickListener(new ClickListener() {
+					
+					private static final long serialVersionUID = -796701773134052932L;
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						try {
+							user.altaUsuario(nameUser.getValue(), passUser.getValue());
+							Notification.show("Register done!");
+							register.close();
+						} catch (Exception e) {
+							Notification.show("Cannot connect to DB");
+						}
+					}
+				});
+				cancel.addClickListener(new ClickListener() {
+
+					private static final long serialVersionUID = 4216398991239881518L;
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						register.close();
+					}
+				});
+				
 			}
 		});
 		
@@ -145,7 +172,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// focus username 
-		user.focus();
+		userText.focus();
 	}
 
 	// Validator for validating the passwords
