@@ -6,23 +6,23 @@ import java.sql.PreparedStatement;
 
 public class DataBaseOperations {
 
-	//*****************************INITIALIZE VARIABLES******************************
+	//*****************************INITIALIZE VARIABLES****************************
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/EMP";
 
 	//Credenciales Base de Datos
 	static final String USER = "root";
 	static final String PASS = "root";
-	private Connection conn = null;
-	private PreparedStatement stmt = null;
+	private static Connection conn = null;
+	private static PreparedStatement stmt = null;
 
 
-	//*****************************LOGIN METHODS************************************
+	//*****************************LOGIN METHODS***********************************
 	public static boolean login(String userNick, int password) throws Exception{
 		if (checkUserExists(userNick))
 			throw new Exception("Usuario ya existe");
 		//ver si coincide userNick con password, recordar password.toString();
-
+		
 		return true;
 	}
 
@@ -32,6 +32,7 @@ public class DataBaseOperations {
 		if (checkUserExists(userNick))
 			throw new Exception("Usuario ya existe");
 		//INSERT INTO Database User user, pwd), redordar password.toString()
+		InsertMethod("Cliente", userNick + "," + Integer.toString(password));
 	}
 
 	public static void deleteUser(String userNick) throws Exception{
@@ -42,21 +43,27 @@ public class DataBaseOperations {
 
 	
 	//*****************************SHOP METHODS************************************
-	public void altaTienda(String shopName) throws Exception{
-		if(!checkShopExists(shopName))
+	public static void altaTienda(String shopName) throws Exception{
+		if(checkShopExists(shopName))
 			throw new Exception("Tienda ya existe");
 		InsertMethod("Tiendas", shopName);
 	}
+	
+	public static void bajaTienda(String shopName) throws Exception{
+		if(!checkShopExists(shopName))
+			throw new Exception("Tienda no existe");
+		DeleteMethod("Tiendas", "nombre", shopName);
+	}
 
 
-	//*****************************PRIVATE METHODS************************************
+	//*****************************PRIVATE METHODS*********************************
 
-	private void connect(){//Metodo para iniciar una conexion a la Base de Datos
+	private static void connect(){//Metodo para iniciar una conexion a la Base de Datos
 		try{
 
 			//Conexion con Base de Datos
 			Class.forName(JDBC_DRIVER);
-			this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 		}
 		catch(Exception e){
@@ -64,8 +71,8 @@ public class DataBaseOperations {
 		}
 	}
 
-	private void InsertMethod(String WHERE, String VALUES){
-		this.connect();
+	private static void InsertMethod(String WHERE, String VALUES){
+		connect();
 		//Preparo la query
 		String query = "INSERT INTO " +WHERE+
 				" VALUES ("+VALUES+")";
@@ -93,8 +100,8 @@ public class DataBaseOperations {
 		}
 	}
 	
-	private void DeleteMethod(String FROM, String WHERE, String IS){
-		this.connect();
+	private static void DeleteMethod(String FROM, String WHERE, String IS){
+		connect();
 		//Preparo la query
 		String query = "DELETE * FROM " +FROM+
 				" WHERE "+ WHERE +"='"+IS+"'";

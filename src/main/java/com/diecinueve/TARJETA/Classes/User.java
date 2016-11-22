@@ -3,11 +3,7 @@ package com.diecinueve.TARJETA.Classes;
 import com.diecinueve.TARJETA.DatabaseOp.DataBaseOperations;
 
 public class User {
-	
-	int idUser;
-	String nick;
-	String password;
-	
+
 	public boolean login(String nick, String password) throws Exception{
 		checkStringNotNull(nick, password);
 		int passwordHash = password.hashCode();
