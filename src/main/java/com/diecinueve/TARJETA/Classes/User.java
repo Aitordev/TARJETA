@@ -3,6 +3,19 @@ package com.diecinueve.TARJETA.Classes;
 import com.diecinueve.TARJETA.DatabaseOp.DataBaseOperations;
 
 public class User {
+	
+	public String nick;
+	public String password;
+	
+	public User() {
+		super();
+	}
+	
+	public User(String nick, String password) {
+		super();
+		this.nick = nick;
+		this.password = password;
+	}
 
 	public boolean login(String nick, String password) throws Exception{
 		checkStringNotNull(nick, password);

@@ -3,50 +3,71 @@ package com.diecinueve.TARJETA.DatabaseOp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.diecinueve.TARJETA.Classes.*;
 
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/EMP";
+	static final String DB_URL = "jdbc:mysql://localhost/";
 
 	//Credenciales Base de Datos
 	static final String USER = "root";
-	static final String PASS = "root";
+	static final String PASS = "password";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
 
+	private static List<User> users = new ArrayList<User>(); 
 
+	
+	
 	//*****************************LOGIN METHODS***********************************
 	public static boolean login(String userNick, int password) throws Exception{
-		if (checkUserExists(userNick))
-			throw new Exception("Usuario ya existe");
-		//ver si coincide userNick con password, recordar password.toString();
-		
-		return true;
+//		if (checkUserExists(userNick))
+//			throw new Exception("Usuario ya existe");
+//		//ver si coincide userNick con password, recordar password.toString();
+//		return true;
+		for(int i = 0; i < users.size(); i++){
+			User us = users.get(i);
+			if(us.nick.equals(userNick) && us.password.equals(password))
+				return true;
+		}
+		return false;
 	}
 
 
 	//*****************************USER METHODS************************************
 	public static void createUser(String userNick, int password) throws Exception{
-		if (checkUserExists(userNick))
-			throw new Exception("Usuario ya existe");
-		//INSERT INTO Database User user, pwd), redordar password.toString()
-		InsertMethod("Cliente", userNick + "," + Integer.toString(password));
+//		if (checkUserExists(userNick))
+//			throw new Exception("Usuario ya existe");
+//		//INSERT INTO Database User user, pwd), redordar password.toString()
+//		InsertMethod("Cliente", userNick + "," + Integer.toString(password));
+		users.add(new User(userNick, Integer.toString(password)));
 	}
 
 	public static void deleteUser(String userNick) throws Exception{
-		if(!checkUserExists(userNick))
-			throw new Exception("Usuario doesn't exist");
+//		if(!checkUserExists(userNick))
+//			throw new Exception("Usuario doesn't exist");
 		//remove user where name = userNick
+		for(int i = 0; i < users.size(); i++){
+			User us = users.get(i);
+			if(us.nick.equals(userNick) ){
+				users.remove(i);
+				break;
+			}
+		}
 	}
 
 	
 	//*****************************SHOP METHODS************************************
 	public static void altaTienda(String shopName) throws Exception{
-		if(checkShopExists(shopName))
-			throw new Exception("Tienda ya existe");
-		InsertMethod("Tiendas", shopName);
+//		if(checkShopExists(shopName))
+//			throw new Exception("Tienda ya existe");
+//		InsertMethod("Tiendas", shopName);
+		
 	}
 	
 	public static void bajaTienda(String shopName) throws Exception{
@@ -129,6 +150,7 @@ public class DataBaseOperations {
 		}
 	}
 	
+
 	
 	private static boolean checkUserExists(String user) {
 		//return ( SELECT * FROM database WHERE nick).equals(user))
