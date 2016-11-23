@@ -23,7 +23,7 @@ public class User {
 		return DataBaseOperations.login(nick, passwordHash);
 	}
 	
-	public void altaUsuario(String nick, String password) throws Exception{
+	public static void altaUsuario(String nick, String password) throws Exception{
 		checkStringNotNull(nick, password);
 		if(password.length() < 8 || !password.matches(".*\\d.*"))
 			throw new Exception("pwd needs 8 caracters and a number");
@@ -42,7 +42,7 @@ public class User {
 			throw new Exception("Nick or pwd empty");
 	}
 	
-	private void checkStringNotNull(String str1, String str2) throws Exception{
+	private static void checkStringNotNull(String str1, String str2) throws Exception{
 		if(str1.isEmpty() || str2.isEmpty())
 			throw new Exception("Nick or pwd empty");
 	}

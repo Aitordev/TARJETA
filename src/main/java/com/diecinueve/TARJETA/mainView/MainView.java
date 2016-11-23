@@ -36,6 +36,17 @@ public class MainView extends CustomComponent implements View {
                 getUI().getNavigator().navigateTo(SimpleLoginView.NAME);
             }
         });
+    	newWindowListener = new ClickListener() {
+			
+			private static final long serialVersionUID = -3186265215968011758L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				String nameButton = event.getButton().getCaption();
+				getSession().setAttribute("window", nameButton);
+				getUI().getNavigator().navigateTo(CommonWindow.NAME);
+			}
+		};
     	
     	misCompras = new Button("Mis Compras");
     	miTarjeta = new Button("Mi Tarjeta");
@@ -66,18 +77,6 @@ public class MainView extends CustomComponent implements View {
     	column2.addComponent(misPuntos);
     	footer.addComponent(opciones);
     	footer.addComponent(logout);
-    	
-    	newWindowListener = new ClickListener() {
-			
-			private static final long serialVersionUID = -3186265215968011758L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				String nameButton = event.getButton().getCaption();
-				getSession().setAttribute("window", nameButton);
-				getUI().getNavigator().navigateTo(CommonWindow.NAME);
-			}
-		};
     	setCompositionRoot(main);
     }
 

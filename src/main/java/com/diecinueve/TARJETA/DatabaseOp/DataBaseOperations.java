@@ -3,84 +3,58 @@ package com.diecinueve.TARJETA.DatabaseOp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.diecinueve.TARJETA.Classes.*;
+import java.sql.ResultSet;
 
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/";
-
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
+	static final String DB_NAME = "TARJETA";
 	//Credenciales Base de Datos
 	static final String USER = "root";
-	static final String PASS = "password";
+	static final String PASS = "root";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
 
-	private static List<User> users = new ArrayList<User>(); 
-	private static List<Shop> shops = new ArrayList<Shop>(); 
-	
-	
+
 	//*****************************LOGIN METHODS***********************************
-	public static boolean login(String userNick, int password) throws Exception{
-//		if (checkUserExists(userNick))
-//			throw new Exception("Usuario ya existe");
-//		//ver si coincide userNick con password, recordar password.toString();
-//		return true;
-		for(int i = 0; i < users.size(); i++){
-			User us = users.get(i);
-			if(us.nick.equals(userNick) && us.password.equals(password))
-				return true;
-		}
-		return false;
+	public static boolean login(String userNick, Integer password) throws Exception{
+		if (checkUserLogin(userNick, password.toString()))
+			return true;
+		else
+			return false;
 	}
 
 
 	//*****************************USER METHODS************************************
 	public static void createUser(String userNick, int password) throws Exception{
-//		if (checkUserExists(userNick))
-//			throw new Exception("Usuario ya existe");
-//		//INSERT INTO Database User user, pwd), redordar password.toString()
-//		InsertMethod("Cliente", userNick + "," + Integer.toString(password));
-		users.add(new User(userNick, Integer.toString(password)));
+		if (checkUserExists(userNick))
+			throw new Exception("Usuario ya existe");
+		//INSERT INTO Database User user, pwd), redordar password.toString()
+		else
+		InsertMethod("Cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ Integer.toString(password)+"'");
 	}
 
 	public static void deleteUser(String userNick) throws Exception{
-//		if(!checkUserExists(userNick))
-//			throw new Exception("Usuario doesn't exist");
+		if(!checkUserExists(userNick))
+			throw new Exception("Usuario doesn't exist");
 		//remove user where name = userNick
-		for(int i = 0; i < users.size(); i++){
-			User us = users.get(i);
-			if(us.nick.equals(userNick) ){
-				users.remove(i);
-				break;
-			}
-		}
 	}
 
-	
+
 	//*****************************SHOP METHODS************************************
 	public static void altaTienda(String shopName) throws Exception{
-//		if(checkShopExists(shopName))
-//			throw new Exception("Tienda ya existe");
-//		InsertMethod("Tiendas", shopName);
-		shops.add(new Shop(shopName));
+		if(checkShopExists(shopName))
+			throw new Exception("Tienda ya existe");
+		else
+		InsertMethod("Tiendas","(`nombre`)", shopName);
 	}
-	
+
 	public static void bajaTienda(String shopName) throws Exception{
-//		if(!checkShopExists(shopName))
-//			throw new Exception("Tienda no existe");
-//		DeleteMethod("Tiendas", "nombre", shopName);
-		for(int i = 0; i < shops.size(); i++){
-			Shop us = shops.get(i);
-			if(us.nombreTienda.equals(shopName) ){
-				shops.remove(i);
-				break;
-			}
-		}
+		if(!checkShopExists(shopName))
+			throw new Exception("Tienda no existe");
+		DeleteMethod("Tiendas", "nombre", shopName);
 	}
 
 
@@ -95,20 +69,20 @@ public class DataBaseOperations {
 
 		}
 		catch(Exception e){
-			//Hacer nada o sacar algun tipo de mensaje de error
+			e.printStackTrace();	
 		}
 	}
 
-	private static void InsertMethod(String WHERE, String VALUES){
+	private static void InsertMethod(String WHERE,String columns, String VALUES){
 		connect();
-		//Preparo la query
-		String query = "INSERT INTO " +WHERE+
-				" VALUES ("+VALUES+")";
-		try {
-			stmt = conn.prepareStatement(query);
+		//Preparo la query INSERT INTO `TARJETA`.`Cliente` (`nick`, `pass`) VALUES ('admin', '1216925212');
 
+		String query = "INSERT INTO "+DB_NAME+"."+WHERE+ columns+
+				" VALUES ("+VALUES+");";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(query);
 			//Ejecuto la query
-			stmt.executeUpdate();
+			int a = stmt.executeUpdate();
 		}
 		catch (Exception e) {
 			//Indicar error
@@ -123,15 +97,15 @@ public class DataBaseOperations {
 					conn.close();
 			}
 			catch(Exception e){
-				//Hacer nada
+				e.printStackTrace();	
 			}
 		}
 	}
-	
+
 	private static void DeleteMethod(String FROM, String WHERE, String IS){
 		connect();
 		//Preparo la query
-		String query = "DELETE * FROM " +FROM+
+		String query = "DELETE * FROM "+DB_NAME+"."+FROM+
 				" WHERE "+ WHERE +"='"+IS+"'";
 		try {
 			stmt = conn.prepareStatement(query);
@@ -140,7 +114,7 @@ public class DataBaseOperations {
 			stmt.executeUpdate();
 		}
 		catch (Exception e) {
-			//Indicar error
+			e.printStackTrace();	
 		}
 		finally{
 			//Cierro la conexion con la Base de Datos en cualquier caso
@@ -152,20 +126,88 @@ public class DataBaseOperations {
 					conn.close();
 			}
 			catch(Exception e){
-				//Hacer nada
+				e.printStackTrace();	
 			}
 		}
 	}
-	
 
-	
+
 	private static boolean checkUserExists(String user) {
-		//return ( SELECT * FROM database WHERE nick).equals(user))
-		return true;
+		connect();
+		String query = "SELECT * FROM  "+DB_NAME+"."+"Cliente WHERE nick='"+user+"'";
+		boolean result = false;
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) result = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+				stmt.close();
+				if(conn !=null)
+				conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+			}
+		}
+		return result;
 	}
-	
+
 	private static boolean checkShopExists(String shop) {
-		//return ( SELECT * FROM database WHERE shop).equals(shop))
-		return true;
+		connect();
+		String query = "SELECT * FROM "+DB_NAME+"."+"Tienda WHERE nombre='"+shop+"'";
+		boolean result = false;
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) result = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+					if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+			}
+		}
+		return result;
 	}
+
+	private static boolean checkUserLogin(String user, String pass) {
+		connect();
+		String query = "SELECT * FROM "+DB_NAME+"."+"Cliente WHERE nick='"+user+"' AND pass='"+pass+"'";
+		boolean result = false;
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) result = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+					if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+			}
+		}
+		return result;
+	}
+
 }

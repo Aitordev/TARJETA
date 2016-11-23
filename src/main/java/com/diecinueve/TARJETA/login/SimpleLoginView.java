@@ -30,6 +30,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 	private final Button loginButton;
 	private final Button singInButton;
 	private static PasswordField passUser;
+	private static TextField nameUser;
 	private static User user;
 
 	
@@ -94,6 +95,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 						password.focus();
 					}
 				} catch (Exception e) {
+					e.printStackTrace();
 					Notification.show("Cannot connect to DB");
 				}
 			}
@@ -106,7 +108,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				Window register = new Window("Register");
-				TextField nameUser = new TextField("Username:");
+				nameUser = new TextField("Username:");
 				nameUser.setWidth("300px");
 				nameUser.setRequired(true);
 				nameUser.setInputPrompt("Your Username (ex. Mendi)");
@@ -146,11 +148,12 @@ public class SimpleLoginView extends CustomComponent implements View {
 					@Override
 					public void buttonClick(ClickEvent event) {
 						try {
-							user.altaUsuario(nameUser.getValue(), passUser.getValue());
+							User.altaUsuario(nameUser.getValue(), passUser.getValue());
 							Notification.show("Register done!");
 							register.close();
 						} catch (Exception e) {
-							Notification.show("Cannot connect to DB");
+							e.printStackTrace();
+							Notification.show(e.getMessage());
 						}
 					}
 				});
