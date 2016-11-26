@@ -56,7 +56,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 		loginButton = new Button("Login");
 
 		// Create login button
-		singInButton = new Button("Sing in");
+		singInButton = new Button("Sign up");
 		
 		// Add both to a panel
 		VerticalLayout fields = new VerticalLayout(userText, password, loginButton, singInButton);
@@ -86,7 +86,7 @@ public class SimpleLoginView extends CustomComponent implements View {
 				String pass = password.getValue();
 			
 				try {
-					if (user.login(username,pass)) {
+					if (User.login(username,pass)) {
 						getSession().setAttribute("user", username);
 						getUI().getNavigator().navigateTo(MainView.NAME);//
 					} else {

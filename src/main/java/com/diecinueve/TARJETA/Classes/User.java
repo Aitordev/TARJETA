@@ -17,9 +17,9 @@ public class User {
 		this.password = password;
 	}
 
-	public boolean login(String nick, String password) throws Exception{
+	public static boolean login(String nick, String password) throws Exception{
 		checkStringNotNull(nick, password);
-		int passwordHash = password.hashCode();
+		int passwordHash = CommonFunc.sha256(password);
 		return DataBaseOperations.login(nick, passwordHash);
 	}
 	

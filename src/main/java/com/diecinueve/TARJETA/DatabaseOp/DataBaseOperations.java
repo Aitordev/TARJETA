@@ -82,10 +82,10 @@ public class DataBaseOperations {
 		try {
 			PreparedStatement stmt = conn.prepareStatement(query);
 			//Ejecuto la query
-			int a = stmt.executeUpdate();
+			stmt.executeUpdate();
 		}
 		catch (Exception e) {
-			//Indicar error
+			e.printStackTrace();
 		}
 		finally{
 			//Cierro la conexion con la Base de Datos en cualquier caso
