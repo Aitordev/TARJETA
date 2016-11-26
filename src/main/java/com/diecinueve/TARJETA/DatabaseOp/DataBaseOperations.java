@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
-	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+/*	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
 	static final String DB_NAME = "TARJETA";
 	//Credenciales Base de Datos
@@ -16,6 +16,16 @@ public class DataBaseOperations {
 	static final String PASS = "root";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
+*/
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DB_URL = "jdbc:mysql://localhost:3306/tarjeta?serverTimezone=UTC&autoReconnect=true&useSSL=false";
+	static final String DB_NAME = "tarjeta";
+	//Credenciales Base de Datos
+	static final String USER = "root";
+	static final String PASS = "password";
+	private static Connection conn = null;
+	private static PreparedStatement stmt = null;
+
 
 
 	//*****************************LOGIN METHODS***********************************
@@ -33,7 +43,7 @@ public class DataBaseOperations {
 			throw new Exception("Usuario ya existe");
 		//INSERT INTO Database User user, pwd), redordar password.toString()
 		else
-		InsertMethod("Cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ Integer.toString(password)+"'");
+			InsertMethod("Cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ Integer.toString(password)+"'");
 	}
 
 	public static void deleteUser(String userNick) throws Exception{
@@ -48,7 +58,7 @@ public class DataBaseOperations {
 		if(checkShopExists(shopName))
 			throw new Exception("Tienda ya existe");
 		else
-		InsertMethod("Tiendas","(`nombre`)", shopName);
+			InsertMethod("Tiendas","(`nombre`)", shopName);
 	}
 
 	public static void bajaTienda(String shopName) throws Exception{
@@ -147,9 +157,9 @@ public class DataBaseOperations {
 		finally{
 			try{
 				if(stmt !=null)
-				stmt.close();
+					stmt.close();
 				if(conn !=null)
-				conn.close();
+					conn.close();
 			}
 			catch(Exception e){
 				e.printStackTrace();	
@@ -174,7 +184,7 @@ public class DataBaseOperations {
 			try{
 				if(stmt !=null)
 					stmt.close();
-					if(conn !=null)
+				if(conn !=null)
 					conn.close();
 			}
 			catch(Exception e){
@@ -200,7 +210,7 @@ public class DataBaseOperations {
 			try{
 				if(stmt !=null)
 					stmt.close();
-					if(conn !=null)
+				if(conn !=null)
 					conn.close();
 			}
 			catch(Exception e){
