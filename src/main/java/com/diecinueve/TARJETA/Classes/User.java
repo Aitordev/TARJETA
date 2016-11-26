@@ -19,7 +19,7 @@ public class User {
 
 	public static boolean login(String nick, String password) throws Exception{
 		checkStringNotNull(nick, password);
-		int passwordHash = CommonFunc.sha256(password);
+		String passwordHash = CommonFunc.sha256(password);
 		return DataBaseOperations.login(nick, passwordHash);
 	}
 	
@@ -27,17 +27,17 @@ public class User {
 		checkStringNotNull(nick, password);
 		if(password.length() < 8 || !password.matches(".*\\d.*"))
 			throw new Exception("pwd needs 8 caracters and a number");
-		int passwordHash = password.hashCode();
+		String passwordHash = CommonFunc.sha256(password);
 		DataBaseOperations.createUser(nick, passwordHash);
 	}
 	
-	public void bajaUsuario(String userNick) throws Exception{
+	public static void bajaUsuario(String userNick) throws Exception{
 		checkStringNotNull(userNick);
 		DataBaseOperations.deleteUser(userNick);
 	}
 	
 	
-	private void checkStringNotNull(String str1) throws Exception{
+	private static void checkStringNotNull(String str1) throws Exception{
 		if(str1.isEmpty())
 			throw new Exception("Nick or pwd empty");
 	}

@@ -29,8 +29,8 @@ public class DataBaseOperations {
 
 
 	//*****************************LOGIN METHODS***********************************
-	public static boolean login(String userNick, Integer password) throws Exception{
-		if (checkUserLogin(userNick, password.toString()))
+	public static boolean login(String userNick, String password) throws Exception{
+		if (checkUserLogin(userNick, password))
 			return true;
 		else
 			return false;
@@ -38,18 +38,17 @@ public class DataBaseOperations {
 
 
 	//*****************************USER METHODS************************************
-	public static void createUser(String userNick, int password) throws Exception{
+	public static void createUser(String userNick, String password) throws Exception{
 		if (checkUserExists(userNick))
 			throw new Exception("Usuario ya existe");
-		//INSERT INTO Database User user, pwd), redordar password.toString()
 		else
-			InsertMethod("Cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ Integer.toString(password)+"'");
+			InsertMethod("Cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ password+"'");
 	}
 
 	public static void deleteUser(String userNick) throws Exception{
 		if(!checkUserExists(userNick))
 			throw new Exception("Usuario doesn't exist");
-		//remove user where name = userNick
+		DeleteMethod("User", "'nick'", "'" + userNick +"'");
 	}
 
 
