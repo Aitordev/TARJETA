@@ -1,5 +1,6 @@
 package com.diecinueve.TARJETA.mainView;
 
+import com.diecinueve.TARJETA.DatabaseOp.DataBaseOperations;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -70,8 +71,7 @@ public class MainView extends CustomComponent implements View {
 						text.setValue("Not avaliable");
 						break;
 					case "Inform User":
-						////////////////////////////////////////////AAAAAAAAAAQQQQQQQQQQQQUIIIIIIIIIIIII!!!!!!!!
-						text.setValue("Not avaliable");
+						text.setValue(DataBaseOperations.userInform());
 						break;
 					default:
 						break;

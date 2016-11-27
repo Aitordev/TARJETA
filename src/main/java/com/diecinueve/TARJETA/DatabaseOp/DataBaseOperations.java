@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 import com.vaadin.ui.Notification;
 
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
+	/*
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
 	static final String DB_NAME = "TARJETA";
@@ -18,7 +20,7 @@ public class DataBaseOperations {
 	static final String PASS = "root";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-	/*
+	 */
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/tarjeta?serverTimezone=UTC&autoReconnect=true&useSSL=false";
 	static final String DB_NAME = "tarjeta";
@@ -27,7 +29,7 @@ public class DataBaseOperations {
 	static final String PASS = "password";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-	 */
+
 
 
 	//*****************************LOGIN METHODS***********************************
@@ -66,6 +68,46 @@ public class DataBaseOperations {
 		if(!checkShopExists(shopName))
 			throw new Exception("Tienda no existe");
 		DeleteMethod("tienda", "nombre", shopName);
+	}
+
+
+	//*****************************INFORM METHODS**********************************
+
+	public static String userInform(){
+		connect();
+		String query = "SELECT idCliente, idTarjeta, nick FROM tarjeta.cliente;";
+		String result = "Id      idTarjeta       nick\n";
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+					if (i > 1) System.out.print(",  ");
+					String columnValue = rs.getString(i);
+					result = result + columnValue + "      ";
+				}
+				result = result + "\n";
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+				if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
+			}
+		}
+		return result;
 	}
 
 
