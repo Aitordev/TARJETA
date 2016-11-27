@@ -1,6 +1,5 @@
 package com.diecinueve.TARJETA.mainView;
 
-import com.diecinueve.TARJETA.Classes.User;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;

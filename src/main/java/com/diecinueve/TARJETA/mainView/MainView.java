@@ -3,9 +3,12 @@ package com.diecinueve.TARJETA.mainView;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -24,7 +27,8 @@ public class MainView extends CustomComponent implements View {
     private ClickListener newWindowListener;
 
     public MainView() {
-    	
+		setSizeFull();
+
     	text = new Label();
     	logout = new Button("Logout", new Button.ClickListener() {
     		private static final long serialVersionUID = 3365371576893038127L;
@@ -59,25 +63,44 @@ public class MainView extends CustomComponent implements View {
     	misPuntos.addClickListener(newWindowListener);
     	opciones.addClickListener(newWindowListener);
     	
-    	VerticalLayout main = new VerticalLayout();
     	HorizontalLayout tittle = new HorizontalLayout();
     	HorizontalLayout body = new HorizontalLayout();
     	VerticalLayout column1 = new VerticalLayout();
     	VerticalLayout column2 = new VerticalLayout();
     	HorizontalLayout footer = new HorizontalLayout();
-    	main.addComponent(tittle);
-    	main.addComponent(body);
-    	main.addComponent(footer);
+    	
     	body.addComponent(column1);
     	body.addComponent(column2);
+    	body.setSpacing(true);
+    	body.setMargin(new MarginInfo(true, true, true, true));
+    	body.setSizeUndefined();
     	tittle.addComponent(text);
     	column1.addComponent(misDatos);
     	column1.addComponent(miTarjeta);
+    	column1.setSpacing(true);
+    	column1.setMargin(new MarginInfo(true, true, true, true));
+    	column1.setSizeUndefined();
     	column2.addComponent(misCompras);
     	column2.addComponent(misPuntos);
+    	column2.setSpacing(true);
+    	column2.setMargin(new MarginInfo(true, true, true, true));
+    	column2.setSizeUndefined();
     	footer.addComponent(opciones);
     	footer.addComponent(logout);
-    	setCompositionRoot(main);
+    	footer.setMargin(new MarginInfo(true, false, true, true));
+    	footer.setSizeUndefined();
+    	
+    	VerticalLayout fields = new VerticalLayout(tittle, body, footer);
+		fields.setCaption("Please select an option.");
+		fields.setSpacing(true);
+		fields.setMargin(new MarginInfo(true, true, true, false));
+		fields.setSizeUndefined();
+    	
+		VerticalLayout viewLayout = new VerticalLayout(fields);
+		viewLayout.setSizeFull();
+		viewLayout.setComponentAlignment(fields, Alignment.MIDDLE_CENTER);
+		viewLayout.setStyleName(Reindeer.LAYOUT_BLUE);
+		setCompositionRoot(viewLayout);
     }
 
     @Override

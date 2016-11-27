@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.vaadin.ui.Notification;
+
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
-/*	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
 	static final String DB_NAME = "TARJETA";
 	//Credenciales Base de Datos
@@ -16,7 +18,7 @@ public class DataBaseOperations {
 	static final String PASS = "root";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-*/
+	/*
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/tarjeta?serverTimezone=UTC&autoReconnect=true&useSSL=false";
 	static final String DB_NAME = "tarjeta";
@@ -25,7 +27,7 @@ public class DataBaseOperations {
 	static final String PASS = "password";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-
+	 */
 
 
 	//*****************************LOGIN METHODS***********************************
@@ -42,13 +44,13 @@ public class DataBaseOperations {
 		if (checkUserExists(userNick))
 			throw new Exception("Usuario ya existe");
 		else
-			InsertMethod("Cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ password+"'");
+			InsertMethod("cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ password+"'");
 	}
 
 	public static void deleteUser(String userNick) throws Exception{
 		if(!checkUserExists(userNick))
 			throw new Exception("Usuario doesn't exist");
-		DeleteMethod("User", "'nick'", "'" + userNick +"'");
+		DeleteMethod("cliente", "'nick'", "'" + userNick +"'");
 	}
 
 
@@ -57,13 +59,13 @@ public class DataBaseOperations {
 		if(checkShopExists(shopName))
 			throw new Exception("Tienda ya existe");
 		else
-			InsertMethod("Tiendas","(`nombre`)", shopName);
+			InsertMethod("tienda","(`nombre`)", shopName);
 	}
 
 	public static void bajaTienda(String shopName) throws Exception{
 		if(!checkShopExists(shopName))
 			throw new Exception("Tienda no existe");
-		DeleteMethod("Tiendas", "nombre", shopName);
+		DeleteMethod("tienda", "nombre", shopName);
 	}
 
 
@@ -79,6 +81,7 @@ public class DataBaseOperations {
 		}
 		catch(Exception e){
 			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
 		}
 	}
 
@@ -94,7 +97,8 @@ public class DataBaseOperations {
 			stmt.executeUpdate();
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");
 		}
 		finally{
 			//Cierro la conexion con la Base de Datos en cualquier caso
@@ -107,6 +111,7 @@ public class DataBaseOperations {
 			}
 			catch(Exception e){
 				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
 			}
 		}
 	}
@@ -124,6 +129,7 @@ public class DataBaseOperations {
 		}
 		catch (Exception e) {
 			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
 		}
 		finally{
 			//Cierro la conexion con la Base de Datos en cualquier caso
@@ -136,6 +142,7 @@ public class DataBaseOperations {
 			}
 			catch(Exception e){
 				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
 			}
 		}
 	}
@@ -143,7 +150,7 @@ public class DataBaseOperations {
 
 	private static boolean checkUserExists(String user) {
 		connect();
-		String query = "SELECT * FROM  "+DB_NAME+"."+"Cliente WHERE nick='"+user+"'";
+		String query = "SELECT * FROM  "+DB_NAME+"."+"cliente WHERE nick='"+user+"'";
 		boolean result = false;
 		try {
 			stmt = conn.prepareStatement(query);
@@ -152,6 +159,7 @@ public class DataBaseOperations {
 		}
 		catch (Exception e) {
 			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
 		}
 		finally{
 			try{
@@ -162,6 +170,7 @@ public class DataBaseOperations {
 			}
 			catch(Exception e){
 				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
 			}
 		}
 		return result;
@@ -169,7 +178,7 @@ public class DataBaseOperations {
 
 	private static boolean checkShopExists(String shop) {
 		connect();
-		String query = "SELECT * FROM "+DB_NAME+"."+"Tienda WHERE nombre='"+shop+"'";
+		String query = "SELECT * FROM "+DB_NAME+"."+"tienda WHERE nombre='"+shop+"'";
 		boolean result = false;
 		try {
 			stmt = conn.prepareStatement(query);
@@ -178,6 +187,7 @@ public class DataBaseOperations {
 		}
 		catch (Exception e) {
 			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
 		}
 		finally{
 			try{
@@ -188,6 +198,7 @@ public class DataBaseOperations {
 			}
 			catch(Exception e){
 				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
 			}
 		}
 		return result;
@@ -195,7 +206,7 @@ public class DataBaseOperations {
 
 	private static boolean checkUserLogin(String user, String pass) {
 		connect();
-		String query = "SELECT * FROM "+DB_NAME+"."+"Cliente WHERE nick='"+user+"' AND pass='"+pass+"'";
+		String query = "SELECT * FROM "+DB_NAME+"."+"cliente WHERE nick='"+user+"' AND pass='"+pass+"'";
 		boolean result = false;
 		try {
 			stmt = conn.prepareStatement(query);
@@ -204,6 +215,7 @@ public class DataBaseOperations {
 		}
 		catch (Exception e) {
 			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");
 		}
 		finally{
 			try{
@@ -214,6 +226,7 @@ public class DataBaseOperations {
 			}
 			catch(Exception e){
 				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");
 			}
 		}
 		return result;
