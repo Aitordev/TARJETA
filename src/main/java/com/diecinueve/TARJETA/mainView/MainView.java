@@ -126,6 +126,7 @@ public class MainView extends CustomComponent implements View {
 		tittle.addComponent(text);
 		column1.addComponent(misDatos);
 		column1.addComponent(miTarjeta);
+		column1.addComponent(inform);
 		column1.setSpacing(true);
 		column1.setMargin(new MarginInfo(true, true, true, true));
 		column1.setSizeUndefined();
