@@ -69,7 +69,7 @@ public class AdminView extends CustomComponent implements View {
 						text.setValue(DataBaseOperations.userInform());
 						break;
 					case "Tiendas list":
-						text.setValue("Not avaliable");
+						text.setValue(DataBaseOperations.purchasesInform());
 						break;
 					case "Premios list":
 						text.setValue("Not avaliable");

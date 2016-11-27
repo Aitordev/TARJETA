@@ -11,16 +11,16 @@ import com.vaadin.ui.Notification;
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
-	/*
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
-	static final String DB_NAME = "tarjeta";
+	static final String DB_NAME = "TARJETA";
 	//Credenciales Base de Datos
 	static final String USER = "root";
 	static final String PASS = "root";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-	 */
+	/*
+
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/tarjeta?serverTimezone=UTC&autoReconnect=true&useSSL=false";
 	static final String DB_NAME = "tarjeta";
@@ -29,7 +29,7 @@ public class DataBaseOperations {
 	static final String PASS = "password";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-
+ */
 
 
 	//*****************************LOGIN METHODS***********************************
@@ -75,7 +75,7 @@ public class DataBaseOperations {
 
 	public static String userInform(){
 		connect();
-		String query = "SELECT idCliente, idTarjeta, nick FROM tarjeta.cliente;";
+		String query = "SELECT idCliente, idTarjeta, nick FROM "+DB_NAME+".cliente;";
 		String result = "Id\t idTarjeta\t nick\n";
 		try {
 			stmt = conn.prepareStatement(query);
@@ -113,10 +113,10 @@ public class DataBaseOperations {
 	public static String purchasesInform(){
 		connect();
 		String query = "SELECT compras.idCompras, tarjeta.nombreCompleto, tienda.nombre, compras.importe, compras.date"
-					+ "	FROM compras"
-					+ "	INNER JOIN tarjeta"
+					+ "	FROM "+DB_NAME+".compras"
+					+ "	INNER JOIN "+DB_NAME+".tarjeta"
 					+ " ON compras.idTarjeta=tarjeta.idTarjeta"
-					+ "	INNER JOIN tienda"
+					+ "	INNER JOIN "+DB_NAME+".tienda"
 					+ "	ON compras.idTarjeta=tienda.idTienda"
 					+ "	ORDER BY compras.idCompras;";
 		String result = "IdCompras\t userName\t nombreTienda\t importe\t fecha\n";
