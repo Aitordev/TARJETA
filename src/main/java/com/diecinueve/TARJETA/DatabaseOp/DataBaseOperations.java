@@ -14,7 +14,7 @@ public class DataBaseOperations {
 	/*
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
-	static final String DB_NAME = "TARJETA";
+	static final String DB_NAME = "tarjeta";
 	//Credenciales Base de Datos
 	static final String USER = "root";
 	static final String PASS = "root";

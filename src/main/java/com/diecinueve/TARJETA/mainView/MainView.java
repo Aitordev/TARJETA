@@ -1,6 +1,5 @@
 package com.diecinueve.TARJETA.mainView;
 
-import com.diecinueve.TARJETA.DatabaseOp.DataBaseOperations;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -58,7 +57,7 @@ public class MainView extends CustomComponent implements View {
 					Window w = new Window(nameButton);
 					TextArea text = new TextArea(event.getButton().getCaption()+ " information:");
 					switch (nameButton) {
-					case "My Compras":
+					case "My Purchases":
 						text.setValue("Not avaliable");
 						break;
 					case "My Tarjeta":
@@ -71,7 +70,7 @@ public class MainView extends CustomComponent implements View {
 						text.setValue("Not avaliable");
 						break;
 					case "Inform User":
-						text.setValue(DataBaseOperations.userInform());
+						text.setValue("Not avaliable");
 						break;
 					default:
 						break;
@@ -99,7 +98,7 @@ public class MainView extends CustomComponent implements View {
 			}
 		};
 
-		misCompras = new Button("My Compras");
+		misCompras = new Button("My Purchases");
 		miTarjeta = new Button("My Tarjeta");
 		misDatos = new Button("My Data");
 		misPuntos = new Button("My Points");

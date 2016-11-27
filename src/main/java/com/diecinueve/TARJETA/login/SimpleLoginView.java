@@ -1,6 +1,7 @@
 package com.diecinueve.TARJETA.login;
 
 import com.diecinueve.TARJETA.Classes.User;
+import com.diecinueve.TARJETA.mainView.AdminView;
 import com.diecinueve.TARJETA.mainView.MainView;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.navigator.View;
@@ -31,12 +32,10 @@ public class SimpleLoginView extends CustomComponent implements View {
 	private final Button singInButton;
 	private static PasswordField passUser;
 	private static TextField nameUser;
-	private static User user;
 
 	
 	public SimpleLoginView() {
 		setSizeFull();
-		user = new User();
 		// Create the user input field
 		userText = new TextField("User:");
 		userText.setWidth("300px");
@@ -88,7 +87,10 @@ public class SimpleLoginView extends CustomComponent implements View {
 				try {
 					if (User.login(username,pass)) {
 						getSession().setAttribute("user", username);
-						getUI().getNavigator().navigateTo(MainView.NAME);//
+						if (username.equals("admin"))
+							getUI().getNavigator().navigateTo(AdminView.NAME);//
+						else
+							getUI().getNavigator().navigateTo(MainView.NAME);//
 					} else {
 						// contraseña mal
 						password.setValue(null);
