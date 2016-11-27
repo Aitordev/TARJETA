@@ -76,7 +76,7 @@ public class DataBaseOperations {
 	public static String userInform(){
 		connect();
 		String query = "SELECT idCliente, idTarjeta, nick FROM tarjeta.cliente;";
-		String result = "Id      idTarjeta       nick\n";
+		String result = "Id\t idTarjeta\t nick\n";
 		try {
 			stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
@@ -86,7 +86,7 @@ public class DataBaseOperations {
 				for (int i = 1; i <= columnsNumber; i++) {
 					if (i > 1) System.out.print(",  ");
 					String columnValue = rs.getString(i);
-					result = result + columnValue + "      ";
+					result = result + columnValue + "\t";
 				}
 				result = result + "\n";
 			}
@@ -109,7 +109,49 @@ public class DataBaseOperations {
 		}
 		return result;
 	}
-
+	
+	public static String purchasesInform(){
+		connect();
+		String query = "SELECT compras.idCompras, tarjeta.nombreCompleto, tienda.nombre, compras.importe, compras.date"
+					+ "	FROM compras"
+					+ "	INNER JOIN tarjeta"
+					+ " ON compras.idTarjeta=tarjeta.idTarjeta"
+					+ "	INNER JOIN tienda"
+					+ "	ON compras.idTarjeta=tienda.idTienda"
+					+ "	ORDER BY compras.idCompras;";
+		String result = "IdCompras\t userName\t nombreTienda\t importe\t fecha\n";
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+					if (i > 1) System.out.print(",  ");
+					String columnValue = rs.getString(i);
+					result = result + columnValue + "\t";
+				}
+				result = result + "\n";
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+				if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
+			}
+		}
+		return result;
+	}
 
 	//*****************************PRIVATE METHODS*********************************
 
