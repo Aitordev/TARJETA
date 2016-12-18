@@ -48,6 +48,13 @@ public class DataBaseOperations {
 		else
 			InsertMethod("cliente", "(`nick`, `pass`)" , "'"+userNick +"' , '"+ password+"'");
 	}
+	
+	public static void editUser(String nick, String newPasswordHash) throws Exception {
+		if(!checkUserExists(nick))
+			throw new Exception("Usuario doesn't exist");
+		UpdateMethod();	
+	}
+
 
 	public static void deleteUser(String userNick) throws Exception{
 		if(!checkUserExists(userNick))
@@ -63,11 +70,115 @@ public class DataBaseOperations {
 		else
 			InsertMethod("tienda","(`nombre`)", shopName);
 	}
+	
+	public static void editTienda(String shopName) throws Exception {
+		if(!checkShopExists(shopName))
+			throw new Exception("Tienda no existe");
+		UpdateMethod();
+	}
 
 	public static void bajaTienda(String shopName) throws Exception{
 		if(!checkShopExists(shopName))
 			throw new Exception("Tienda no existe");
 		DeleteMethod("tienda", "nombre", shopName);
+	}
+
+	//*****************************CARD METHODS************************************
+
+	
+	public static boolean createCard(String nick, String fullName, String phone, String adress, String mail) throws Exception {
+
+		if(!checkUserExists(nick))
+			throw new Exception("Usuario no existe");
+		
+		InsertMethod("tarjeta", "(`nombreCompleto`, `telefono`, `direccion`, `email`)" , "'"+fullName +"' , '"+ phone+ "' , '"+adress +"' , '"+mail +"'");
+		//TODO: lo de arriba que devuelva el id tarjeta quizas?
+		//TODO: int cardID = lookForCardId(nick) -> returns id user of the card
+		//Edit method user a tarjeta = idTarjeta
+		return false;
+	}
+	
+	public static boolean editCard(int idUser, String fullName, String phone, String adress, String mail) {
+		// TODO
+		return false;
+	}
+
+	public static boolean deleteCard(String nick) throws Exception {
+		if(!checkUserExists(nick))
+			throw new Exception("Usuario no existe");
+		if(!checkUserHasCard(nick))
+			throw new Exception("Usuario no tiene tarjeta");
+		//TODO: int cardID = lookForCardId(nick) -> returns id user of the card
+		int cardId = 0;
+		DeleteMethod("tarjeta", "idTarjeta", Integer.toString(cardId));
+		return false;
+	}
+	
+	public static boolean buy(String nick, String shop, double price) throws Exception {
+		// TODO Auto-generated method stub
+		if(!checkUserExists(nick))
+			throw new Exception("Usuario no existe");
+		if(!checkUserHasCard(nick))
+			throw new Exception("Usuario no tiene tarjeta");
+		if(!checkShopExists(shop))
+			throw new Exception("Tienda no existe");
+		//TODO: int cardID = lookForCardId(nick) -> returns id user of the card
+		//TODO: int shopID = lookForShopId(shop) -> returns id shop
+
+		int cardID = 0;
+		int shopID = 0;
+		
+		InsertMethod("compras", "(`idTienda`, `idTarjeta`, `importe`)", "'"+shopID+ "' , '"+cardID +"' , '"+ Double.toString(price)+"'");
+		int points = (int) (price + 0.5);//TODO: probar correcto funcionamiento
+		//TODO: edit card: add points
+		return false;
+	}
+
+	public static boolean exchange(String nick, String prize) throws Exception {
+		if(!checkUserExists(nick))
+			throw new Exception("Usuario no existe");
+		if(!checkUserHasCard(nick))
+			throw new Exception("Usuario no tiene tarjeta");
+		if(!checkPrizeExists(prize))
+			throw new Exception("El premio no existe");
+		
+		//TODO: int cardID = lookForCardId(nick) -> returns id user of the card
+		//TODO: int prizeID = lookForPrizeId(nick) -> returns id prize
+		int cardID = 0;
+		int prizeID = 0;
+		
+		//TODO: get pointsCard
+		//TODO: get pointsPrize
+		int pointsCard = 0;
+		int pointsPrize = 0;
+		if(pointsCard < pointsPrize)
+			throw new Exception("No hay puntos suficientes");
+		InsertMethod("canjeos", "(`idPremio`, `idTarjeta`)", "'"+prizeID+ "' , '"+cardID +"'");
+		//TODO: edit tarjeta y quitarle pointsPrize
+		return false;
+	}
+
+	
+	//*****************************PRIZE METHODS**********************************
+
+	public static boolean createPrize(String concept, String quantity, int priceInPoints) throws Exception {
+		if(checkPrizeExists(concept))
+			throw new Exception("El premio ya existe");
+		
+		InsertMethod("premios", "(`concepto`, `cantidad`, `puntosNecesarois`)", "'"+concept+ "' , '"+quantity + "' , '"+Integer.toString(priceInPoints)+"'");
+		return true;
+	}
+
+	public static boolean editPrize(String concept, String quantity, String priceInPoints) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean deletePrize(String concept) throws Exception {
+		if(!checkPrizeExists(concept))
+			throw new Exception("El premio no existe");
+		DeleteMethod("premios", "concepto", concept);
+		return true;
 	}
 
 
@@ -199,6 +310,11 @@ public class DataBaseOperations {
 			}
 		}
 	}
+	
+	private static void UpdateMethod() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private static void DeleteMethod(String FROM, String WHERE, String IS){
 		connect();
@@ -233,6 +349,35 @@ public class DataBaseOperations {
 
 
 	private static boolean checkUserExists(String user) {
+		connect();
+		String query = "SELECT * FROM  "+DB_NAME+"."+"cliente WHERE nick='"+user+"'";
+		boolean result = false;
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) result = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+				if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
+			}
+		}
+		return result;
+	}
+	
+	private static boolean checkUserHasCard(String user) {
+		//TODO: return true if the user has a cardId
 		connect();
 		String query = "SELECT * FROM  "+DB_NAME+"."+"cliente WHERE nick='"+user+"'";
 		boolean result = false;
@@ -315,5 +460,35 @@ public class DataBaseOperations {
 		}
 		return result;
 	}
+
+	private static boolean checkPrizeExists(String prize) {
+		connect();
+		String query = "SELECT * FROM "+DB_NAME+"."+"canjeos WHERE nombre='"+prize+"'";
+		boolean result = false;
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) result = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+				if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
+			}
+		}
+		return result;
+	}
+
+
 
 }

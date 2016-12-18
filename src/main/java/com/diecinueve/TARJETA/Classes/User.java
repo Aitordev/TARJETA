@@ -31,6 +31,14 @@ public class User {
 		DataBaseOperations.createUser(nick, passwordHash);
 	}
 	
+	public static void editUsuario(String nick, String password) throws Exception{
+		checkStringNotNull(nick, password);
+		if(password.length() < 8 || !password.matches(".*\\d.*"))
+			throw new Exception("pwd needs 8 caracters and a number");
+		String passwordHash = CommonFunc.sha256(password);
+		DataBaseOperations.editUser(nick, passwordHash);
+	}
+	
 	public static void bajaUsuario(String userNick) throws Exception{
 		checkStringNotNull(userNick);
 		DataBaseOperations.deleteUser(userNick);
