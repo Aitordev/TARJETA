@@ -40,19 +40,10 @@ public class OptionWindow extends CustomComponent implements View {
 			}
 		});
 
-		Button modificarDatos = new Button("Modify Data");
 		Button solicitarTarjeta = new Button("Request Tarjeta");
-		Button modificarTarjeta = new Button("Modify Tarjeta");
 		Button eliminarCuenta = new Button("Delete Account");
 		Button atras = new Button("Return back");
-		modificarDatos.addClickListener(new ClickListener() {
-			private static final long serialVersionUID = -5843411962412709416L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Notification.show("Not avaliable");
-			}
-		});
+		
 		solicitarTarjeta.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -6250117129810876328L;
 
@@ -62,15 +53,7 @@ public class OptionWindow extends CustomComponent implements View {
 
 			}
 		});
-		modificarTarjeta.addClickListener(new ClickListener() {
-			private static final long serialVersionUID = 1458292184679643538L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Notification.show("Not avaliable");
-
-			}
-		});
+		
 		eliminarCuenta.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 8008170470519832303L;
 
@@ -134,12 +117,10 @@ public class OptionWindow extends CustomComponent implements View {
 		body.setMargin(new MarginInfo(true, true, true, true));
 		body.setSizeUndefined();
 		tittle.addComponent(text);
-		column1.addComponent(modificarDatos);
 		column1.addComponent(solicitarTarjeta);
 		column1.setSpacing(true);
 		column1.setMargin(new MarginInfo(true, true, true, true));
 		column1.setSizeUndefined();
-		column2.addComponent(modificarTarjeta);
 		column2.addComponent(eliminarCuenta);
 		column2.setSpacing(true);
 		column2.setMargin(new MarginInfo(true, true, true, true));

@@ -4,6 +4,7 @@ import com.diecinueve.TARJETA.Classes.User;
 import com.diecinueve.TARJETA.mainView.AdminView;
 import com.diecinueve.TARJETA.mainView.MainView;
 import com.vaadin.data.validator.AbstractValidator;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
@@ -53,7 +54,8 @@ public class SimpleLoginView extends CustomComponent implements View {
 
 		// Create login button
 		loginButton = new Button("Login");
-
+		loginButton.setClickShortcut(KeyCode.ENTER);
+		loginButton.addStyleName(Reindeer.BUTTON_DEFAULT);
 		// Create login button
 		singInButton = new Button("Sign up");
 		
@@ -128,8 +130,9 @@ public class SimpleLoginView extends CustomComponent implements View {
 				rpassUser.setValue("");
 				rpassUser.setNullRepresentation("");	
 				
-				
 				Button accept = new Button("Accept");
+				accept.setClickShortcut(KeyCode.ENTER);
+				accept.addStyleName(Reindeer.BUTTON_DEFAULT);
 				Button cancel = new Button("Cancel");
 				HorizontalLayout buttons = new HorizontalLayout(accept,cancel);
 				buttons.setSpacing(true);
