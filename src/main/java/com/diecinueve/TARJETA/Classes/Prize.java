@@ -21,25 +21,26 @@ public class Prize {
 	}
 
 
-	public static boolean createPrize(String concept, String quantity, int priceInPoints) throws Exception{
+	public static void createPrize(String concept, String quantity, int priceInPoints) throws Exception{
 		checkStringNotNull(concept);
 		checkStringNotNull(quantity);
 		
-		return DataBaseOperations.createPrize(concept, quantity, priceInPoints);
+		DataBaseOperations.createPrize(concept, quantity, priceInPoints);
 	}
 
-	public static boolean editPrize(String concept, String quantity, String priceInPoints) throws Exception{
+	public static void editPrize(String concept, String NewConcept, String quantity, String priceInPoints) throws Exception{
 		checkStringNotNull(concept);
+		checkStringNotNull(NewConcept);
 		checkStringNotNull(quantity);
 		checkStringNotNull(priceInPoints);
 		
-		return DataBaseOperations.editPrize(concept, quantity, priceInPoints);
+		DataBaseOperations.editPrize(concept, NewConcept, quantity, priceInPoints);
 	}
 	
-	public static boolean deletePrize(String concept) throws Exception{
+	public static void deletePrize(String concept) throws Exception{
 		checkStringNotNull(concept);
 		
-		return DataBaseOperations.deletePrize(concept);
+		DataBaseOperations.deletePrize(concept);
 	}
 	
 	private static void checkStringNotNull(String str1) throws Exception{

@@ -23,40 +23,43 @@ public class Card {
 		this.points = 0;
 	}
 
-	public static boolean createCard(String nick, String fullName, String phone, String adress, String mail) throws Exception{
+	public static void createCard(String nick, String fullName, String phone, String adress, String mail) throws Exception{
 		checkStringNotNull(nick);
 		checkStringNotNull(fullName);
 		checkStringNotNull(phone);
 		checkStringNotNull(adress);
 		checkStringNotNull(mail);
 		
-		return DataBaseOperations.createCard(nick, fullName, phone, adress, mail);
+		DataBaseOperations.createCard(nick, fullName, phone, adress, mail);
 	}
 	
-	public static boolean editCard(int idUser, String fullName, String phone, String adress, String mail) throws Exception{
+	public static void editCard(String idUser, String fullName, String phone, String adress, String mail) throws Exception{
 		checkStringNotNull(fullName);
 		checkStringNotNull(phone);
 		checkStringNotNull(adress);
 		checkStringNotNull(mail);
 		
-		return DataBaseOperations.editCard(idUser, fullName, phone, adress, mail);
+		DataBaseOperations.editCard(idUser, fullName, phone, adress, mail);
 	}
 	
-	public static boolean deleteCard(String nick) throws Exception{
-		return DataBaseOperations.deleteCard(nick);
+	public static void deleteCard(String nick) throws Exception{
+		DataBaseOperations.deleteCard(nick);
 	}
 	
-	public static boolean buy(String nick, String shop, double price) throws Exception{
+	public static void buy(String nick, String shop, double price) throws Exception{
 		checkStringNotNull(shop);
-		return DataBaseOperations.buy(nick, shop, price);
+		DataBaseOperations.buy(nick, shop, price);
 	}
 	
-	public static boolean exchange(String nick, String premio) throws Exception{
+	public static void exchange(String nick, String premio) throws Exception{
 		checkStringNotNull(premio);
-		return DataBaseOperations.exchange(nick, premio);
+		DataBaseOperations.exchange(nick, premio);
 	}
 	
-	
+	public static void getMyPoints(String nick) throws Exception{
+		checkStringNotNull(nick);
+		DataBaseOperations.getCardPoints(nick);
+	}
 	
 	private static void checkStringNotNull(String str1) throws Exception{
 		if(str1.isEmpty())

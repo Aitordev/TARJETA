@@ -44,6 +44,11 @@ public class User {
 		DataBaseOperations.deleteUser(userNick);
 	}
 	
+	public static void getCardId(String userNick) throws Exception{
+		checkStringNotNull(userNick);
+		DataBaseOperations.getCardIdFromUser(userNick);
+	}
+	
 	
 	private static void checkStringNotNull(String str1) throws Exception{
 		if(str1.isEmpty())
