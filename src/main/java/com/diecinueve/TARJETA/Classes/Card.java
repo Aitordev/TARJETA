@@ -56,7 +56,10 @@ public class Card {
 		DataBaseOperations.exchange(nick, premio);
 	}
 	
-	
+	public static void getMyPoints(String nick) throws Exception{
+		checkStringNotNull(nick);
+		DataBaseOperations.getCardPoints(nick);
+	}
 	
 	private static void checkStringNotNull(String str1) throws Exception{
 		if(str1.isEmpty())
