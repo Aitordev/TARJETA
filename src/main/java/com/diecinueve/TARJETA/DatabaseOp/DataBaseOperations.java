@@ -259,7 +259,7 @@ public class DataBaseOperations {
 	public static String userInform(){
 		connect();
 		String query = "SELECT idCliente, idTarjeta, nick FROM "+DB_NAME+".cliente;";
-		String result = "Id\t idTarjeta\t nick\n";
+		String result = "Id, idTarjeta, nick\n";
 		try {
 			stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
@@ -267,9 +267,8 @@ public class DataBaseOperations {
 			int columnsNumber = rsmd.getColumnCount();
 			while (rs.next()) {
 				for (int i = 1; i <= columnsNumber; i++) {
-					if (i > 1) System.out.print(",  ");
 					String columnValue = rs.getString(i);
-					result = result + columnValue + "\t";
+					result = result + columnValue + ", ";
 				}
 				result = result + "\n";
 			}
@@ -293,6 +292,83 @@ public class DataBaseOperations {
 		return result;
 	}
 	
+	public static String CardInform(){
+		connect();
+		String query = "SELECT cliente.idCliente, cliente.nick, tarjeta.nombreCompleto, tarjeta.telefono, tarjeta.direccion, tarjeta.email, tarjeta.puntos"
+				+ "	FROM "+DB_NAME+".cliente"
+				+ "	INNER JOIN "+DB_NAME+".tarjeta"
+				+ " ON cliente.idTarjeta=tarjeta.idTarjeta"
+				+ "	ORDER BY cliente.idCliente;";
+		String result = "IdCliente, Nick, nombreCompleto, Telefono, Dirección, Email, Puntos \n";
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+					String columnValue = rs.getString(i);
+					result = result + columnValue + ", ";
+				}
+				result = result + "\n";
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+				if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
+			}
+		}
+		return result;
+	}
+	
+	public static String ShopInform(){
+		connect();
+		String query = "SELECT * FROM tarjeta.tienda;";
+		String result = "IdTienda, Nombre \n";
+		try {
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+					String columnValue = rs.getString(i);
+					result = result + columnValue + ", ";
+				}
+				result = result + "\n";
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			Notification.show("Cannot connect BD!");	
+		}
+		finally{
+			try{
+				if(stmt !=null)
+					stmt.close();
+				if(conn !=null)
+					conn.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();	
+				Notification.show("Cannot connect BD!");	
+			}
+		}
+		return result;
+	}
+	
+	
 	public static String purchasesInform(){
 		connect();
 		String query = "SELECT compras.idCompras, tarjeta.nombreCompleto, tienda.nombre, compras.importe, compras.date"
@@ -310,7 +386,6 @@ public class DataBaseOperations {
 			int columnsNumber = rsmd.getColumnCount();
 			while (rs.next()) {
 				for (int i = 1; i <= columnsNumber; i++) {
-					if (i > 1) System.out.print(",  ");
 					String columnValue = rs.getString(i);
 					result = result + columnValue + "\t";
 				}

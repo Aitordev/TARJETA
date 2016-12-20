@@ -3,6 +3,7 @@ package com.diecinueve.TARJETA.tests;
 import java.util.concurrent.TimeUnit;
 
 import com.diecinueve.TARJETA.Classes.Card;
+import com.diecinueve.TARJETA.Classes.Informs;
 import com.diecinueve.TARJETA.Classes.Prize;
 import com.diecinueve.TARJETA.Classes.Shop;
 import com.diecinueve.TARJETA.Classes.User;
@@ -66,17 +67,17 @@ public class Tests {
 //			TimeUnit.SECONDS.sleep(2);
 //
 //			
-			//Test tarjeta
-			System.out.println("TU10");
-			User.altaUsuario("pruebaUser", "password1");
-			Card.createCard("pruebaUser", " usuario1 Apellido1", "606606606", "direccionEjemplo", "emailEjemplo");
-			TimeUnit.SECONDS.sleep(2);
-			Card card = Card.getCardData("pruebaUser");
-			System.out.println(card.fullName);
-			System.out.println(card.adress);
-			System.out.println(card.mail);
-			System.out.println(card.phone);
-			System.out.println(card.points);
+//			//Test tarjeta
+//			System.out.println("TU10");
+//			User.altaUsuario("pruebaUser", "password1");
+//			Card.createCard("pruebaUser", " usuario1 Apellido1", "606606606", "direccionEjemplo", "emailEjemplo");
+//			TimeUnit.SECONDS.sleep(2);
+//			Card card = Card.getCardData("pruebaUser");
+//			System.out.println(card.fullName);
+//			System.out.println(card.adress);
+//			System.out.println(card.mail);
+//			System.out.println(card.phone);
+//			System.out.println(card.points);
 // 			
 //			System.out.println("TU11");
 //			Card.deleteCard("pruebaUser");
@@ -113,9 +114,20 @@ public class Tests {
 //			if(!login) throw new Exception();
 //			User.bajaUsuario("pruebaUser");
 //			TimeUnit.SECONDS.sleep(2);
-//
+
+//			System.out.println("TU17");
+//			System.out.println(Informs.informUsers());
+			
+//			System.out.println("TU18");
+//			System.out.println(Informs.informShop());
+			
+//			System.out.println("TU19");
+//			System.out.println(Informs.informCard());
 //			
-//			
+			System.out.println("TU20");
+			System.out.println(Informs.informPurchases());
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
