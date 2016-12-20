@@ -28,11 +28,10 @@ public class Prize {
 		DataBaseOperations.createPrize(concept, quantity, priceInPoints);
 	}
 
-	public static void editPrize(String concept, String NewConcept, String quantity, String priceInPoints) throws Exception{
+	public static void editPrize(String concept, String NewConcept, String quantity, int priceInPoints) throws Exception{
 		checkStringNotNull(concept);
 		checkStringNotNull(NewConcept);
 		checkStringNotNull(quantity);
-		checkStringNotNull(priceInPoints);
 		
 		DataBaseOperations.editPrize(concept, NewConcept, quantity, priceInPoints);
 	}

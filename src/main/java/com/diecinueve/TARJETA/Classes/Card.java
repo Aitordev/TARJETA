@@ -33,17 +33,22 @@ public class Card {
 		DataBaseOperations.createCard(nick, fullName, phone, adress, mail);
 	}
 	
-	public static void editCard(String idUser, String fullName, String phone, String adress, String mail) throws Exception{
+	public static void editCard(String nick, String fullName, String phone, String adress, String mail) throws Exception{
+		checkStringNotNull(nick);
 		checkStringNotNull(fullName);
 		checkStringNotNull(phone);
 		checkStringNotNull(adress);
 		checkStringNotNull(mail);
 		
-		DataBaseOperations.editCard(idUser, fullName, phone, adress, mail);
+		DataBaseOperations.editCard(nick, fullName, phone, adress, mail);
 	}
 	
 	public static void deleteCard(String nick) throws Exception{
 		DataBaseOperations.deleteCard(nick);
+	}
+	
+	public static Card getCardData(String nick) throws Exception{
+		return DataBaseOperations.getCardData(nick);
 	}
 	
 	public static void buy(String nick, String shop, double price) throws Exception{
