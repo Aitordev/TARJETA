@@ -1,12 +1,13 @@
 package com.diecinueve.TARJETA.mainView;
 
-import com.diecinueve.TARJETA.Classes.Prize;
+import com.diecinueve.TARJETA.Classes.Card;
 import com.diecinueve.TARJETA.Classes.User;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -15,8 +16,10 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -37,13 +40,17 @@ public class MainView extends CustomComponent implements View {
 	private Button opciones;
 	private ClickListener newWindowListener;
 	private Layout cosas;
+	private Layout cosas2;
 	private String username;
 	private TextField nick;
+	private Window w2;
+
 
 	public MainView() {
 		setSizeFull();
 		nick = new TextField(); 
 		cosas = new FormLayout();
+		cosas2 = new FormLayout();
 		text = new Label();
 		logout = new Button("Logout", new Button.ClickListener() {
 			private static final long serialVersionUID = 3365371576893038127L;
@@ -64,6 +71,7 @@ public class MainView extends CustomComponent implements View {
 				String nameButton = event.getButton().getCaption();
 				HorizontalLayout buttons = new HorizontalLayout();
 				Button accept = new Button("Accept");
+				Button accept2= new Button("Accept");
 				Button modify = new Button("Modify");
 				Button cancel = new Button("Cancel");
 				cosas.removeAllComponents();
@@ -77,15 +85,180 @@ public class MainView extends CustomComponent implements View {
 					switch (nameButton) {
 					case "My Purchases":
 						TextArea pur = new TextArea();
-						pur.setValue("lista");
+						pur.setValue("lista");//TODO
+						buttons.addComponent(accept);
 						break;
 					case "My Tarjeta":
 						Button informacion = new Button("Informacion");
+						informacion.addClickListener(new ClickListener() {
+
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void buttonClick(ClickEvent event) {
+								cosas2.removeAllComponents();
+								HorizontalLayout buttons = new HorizontalLayout();
+								w2 = new Window();
+								buttons.setSpacing(true);
+								buttons.addComponent(modify);
+								buttons.addComponent(cancel);
+								TextField nombre = new TextField();//TODO
+								nombre.setCaption("Nombre: ");
+								nombre.setIcon(FontAwesome.CREDIT_CARD);
+								TextField telefono = new TextField();//TODO
+								telefono.setIcon(FontAwesome.PHONE);
+								telefono.setCaption("Telefono: ");
+								TextField dir = new TextField();//TODO
+								dir.setIcon(FontAwesome.TRIPADVISOR);
+								dir.setCaption("Direccion: ");
+								TextField email = new TextField();//TODO
+								email.setIcon(FontAwesome.MAIL_FORWARD);
+								email.setCaption("Email: ");
+								cosas2.addComponent(nombre);
+								cosas2.addComponent(telefono);
+								cosas2.addComponent(dir);
+								cosas2.addComponent(email);
+								VerticalLayout fields = new VerticalLayout(cosas2,buttons);
+								fields.setSpacing(true);
+								fields.setMargin(new MarginInfo(true, true, true, true));
+								fields.setSizeUndefined();
+								w2.setContent(fields);
+								w2.center();
+								UI.getCurrent().addWindow(w2);
+								modify.addClickListener(new ClickListener() {
+									private static final long serialVersionUID = 8254770808228815879L;
+
+									@Override
+									public void buttonClick(ClickEvent event) {
+										try {
+											Card.editCard(nick.getValue(), nombre.getValue(), telefono.getValue(), dir.getValue(), email.getValue());
+										} catch (Exception e) {
+											e.printStackTrace();
+										};
+										w2.close();
+									}
+								});
+								cancel.addClickListener(new ClickListener() {
+
+									private static final long serialVersionUID = 1L;
+
+									@Override
+									public void buttonClick(ClickEvent event) {
+										w2.close();										
+									}
+								});
+							}
+
+						});
 						Button crear = new Button("Crear");
-						Button modificar = new Button("Modificar");
+						crear.addClickListener(new ClickListener() {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void buttonClick(ClickEvent event) {
+								cosas2.removeAllComponents();
+								HorizontalLayout buttons = new HorizontalLayout();
+								w2 = new Window();
+								buttons.setSpacing(true);
+								buttons.addComponent(accept2);
+								buttons.addComponent(cancel);
+								TextField nombre = new TextField();
+								nombre.setCaption("Nombre: ");
+								nombre.setIcon(FontAwesome.CREDIT_CARD);
+								TextField telefono = new TextField();
+								telefono.setIcon(FontAwesome.PHONE);
+								telefono.setCaption("Telefono: ");
+								TextField dir = new TextField();
+								dir.setIcon(FontAwesome.TRIPADVISOR);
+								dir.setCaption("Direccion: ");
+								TextField email = new TextField();
+								email.setIcon(FontAwesome.MAIL_FORWARD);
+								email.setCaption("Email: ");
+								cosas2.addComponent(nombre);
+								cosas2.addComponent(telefono);
+								cosas2.addComponent(dir);
+								cosas2.addComponent(email);
+								VerticalLayout fields = new VerticalLayout(cosas2,buttons);
+								fields.setSpacing(true);
+								fields.setMargin(new MarginInfo(true, true, true, true));
+								fields.setSizeUndefined();
+								w2.setContent(fields);
+								w2.center();
+								UI.getCurrent().addWindow(w2);
+								accept2.addClickListener(new ClickListener() {
+									private static final long serialVersionUID = 8254770808228815879L;
+
+									@Override
+									public void buttonClick(ClickEvent event) {
+										try {
+											Card.createCard(nick.getValue(), nombre.getValue(), telefono.getValue(), dir.getValue(), email.getValue());
+										} catch (Exception e) {
+											e.printStackTrace();
+										};
+										w2.close();
+									}
+								});
+								cancel.addClickListener(new ClickListener() {
+
+									private static final long serialVersionUID = 1L;
+
+									@Override
+									public void buttonClick(ClickEvent event) {
+										w2.close();										
+									}
+								});
+							}
+
+						});
 						Button borrar = new Button("Borrar tarjeta");
+						borrar.addClickListener(new ClickListener() {
+
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void buttonClick(ClickEvent event) {
+								String nameButton = event.getButton().getCaption();
+								Window w = new Window(nameButton);
+								Label l = new Label("Really?");
+								Button accept = new Button("Accept");
+								Button cancel = new Button("Cancel");
+								HorizontalLayout j = new HorizontalLayout(l);
+								HorizontalLayout h = new HorizontalLayout(accept,cancel);
+								h.setSpacing(true);
+								VerticalLayout v = new VerticalLayout(j,h);
+								v.setMargin(new MarginInfo(true, true, true, true));
+								accept.addClickListener(new ClickListener() {
+									private static final long serialVersionUID = -2984165706585825647L;
+
+									@Override
+									public void buttonClick(ClickEvent event) {
+										try {
+											Card.deleteCard(nick.getValue());
+										} catch (Exception e) {
+											e.printStackTrace();
+											Notification.show("Invalid Operation");
+										}
+										w.close();
+									}
+
+								});
+								cancel.addClickListener(new ClickListener() {
+									private static final long serialVersionUID = 5135703379856412801L;
+
+									@Override
+									public void buttonClick(ClickEvent event) {
+										w.close();
+										if (w2!=null) w2.close();
+									}
+								});
+								w.setContent(v);
+								w.center();
+								UI.getCurrent().addWindow(w);
+
+							}
+						});
 						Button add = new Button("Añadir compra");
-						VerticalLayout a = new VerticalLayout(informacion,crear, modificar);
+						VerticalLayout a = new VerticalLayout(informacion,crear);
 						VerticalLayout b = new VerticalLayout(borrar,add);						
 						a.setSpacing(true);
 						b.setSpacing(true);
@@ -96,9 +269,9 @@ public class MainView extends CustomComponent implements View {
 						nick.setCaption("Nick: ");
 						nick.setIcon(FontAwesome.USER);
 						nick.setReadOnly(true);
-						TextField tarjeta = new TextField(/*User.getCardId(nick.getValue())*/);
+						TextField tarjeta = new TextField(/*User.getCardId(nick.getValue())*/);//TODO
 						tarjeta.setCaption("Nª Tarjeta: ");
-						tarjeta.setIcon(FontAwesome.CART_PLUS);
+						tarjeta.setIcon(FontAwesome.CREDIT_CARD);
 						tarjeta.setReadOnly(true);
 						TextField newpass = new TextField();
 						newpass.setIcon(FontAwesome.BEER);
@@ -113,6 +286,7 @@ public class MainView extends CustomComponent implements View {
 							public void buttonClick(ClickEvent event) {
 								try {
 									User.editUsuario(nick.getValue(), newpass.getValue());
+									w.close();
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -122,7 +296,7 @@ public class MainView extends CustomComponent implements View {
 						buttons.addComponent(cancel);
 						break;
 					case "My Points":
-						TextField poi = new TextField(Prize.getMyPoints(nick.getValue()) );
+						TextField poi = new TextField(/*Prize.getMyPoints(nick.getValue()) */);//TODO
 						poi.setIcon(FontAwesome.UPLOAD);
 						poi.setCaption("Points: ");
 						poi.setReadOnly(true);
@@ -130,7 +304,11 @@ public class MainView extends CustomComponent implements View {
 						buttons.addComponent(accept);
 						break;
 					case "Premios":
-						text.setValue("Not avaliable");
+						Image pa = new Image(null, new ThemeResource("pa.jpg"));
+						Image pb = new Image(null, new ThemeResource("pb.jpg"));
+						cosas.addComponent(pa);
+						cosas.addComponent(pb);
+						buttons.addComponent(accept);
 						break;
 					default:
 						break;

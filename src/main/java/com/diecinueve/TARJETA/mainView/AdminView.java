@@ -43,7 +43,7 @@ public class AdminView extends CustomComponent implements View {
 
 	public AdminView() {
 		setSizeFull();
-
+		textArea =new TextArea();
 		text = new Label();
 		logout = new Button("Logout", new Button.ClickListener() {
 			private static final long serialVersionUID = 3365371576893038127L;

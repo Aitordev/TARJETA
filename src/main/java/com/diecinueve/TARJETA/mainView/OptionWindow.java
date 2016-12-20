@@ -117,7 +117,6 @@ public class OptionWindow extends CustomComponent implements View {
 		body.setMargin(new MarginInfo(true, true, true, true));
 		body.setSizeUndefined();
 		tittle.addComponent(text);
-		column1.addComponent(solicitarTarjeta);
 		column1.setSpacing(true);
 		column1.setMargin(new MarginInfo(true, true, true, true));
 		column1.setSizeUndefined();
