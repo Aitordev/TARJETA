@@ -21,9 +21,11 @@ public class Shop {
 		DataBaseOperations.altaTienda(nombreTienda);
 	}
 	
-	public static void editTienda(String nombreTienda) throws Exception{
+	public static void editTienda(String nombreTienda, String newNombreTienda) throws Exception{
 		checkStringNotNull(nombreTienda);
-		DataBaseOperations.editTienda(nombreTienda);
+		checkStringNotNull(newNombreTienda);
+
+		DataBaseOperations.editTienda(nombreTienda, newNombreTienda);
 	}
 
 	
