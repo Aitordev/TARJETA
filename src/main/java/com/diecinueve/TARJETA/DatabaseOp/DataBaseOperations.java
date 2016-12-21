@@ -12,7 +12,6 @@ import com.vaadin.ui.Notification;
 public class DataBaseOperations {
 
 	//*****************************INITIALIZE VARIABLES****************************
-/*
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/TARJETA";
 	static final String DB_NAME = "TARJETA";
@@ -21,7 +20,7 @@ public class DataBaseOperations {
 	static final String PASS = "root";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
-*/
+/*
 
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/tarjeta?serverTimezone=UTC&autoReconnect=true&useSSL=false";
@@ -31,7 +30,7 @@ public class DataBaseOperations {
 	static final String PASS = "password";
 	private static Connection conn = null;
 	private static PreparedStatement stmt = null;
- 
+	*/
 
 
 	//*****************************LOGIN METHODS***********************************
@@ -813,7 +812,7 @@ public class DataBaseOperations {
 	
 	private static Card getCardData(int cardId){
 		connect();
-		String query = "SELECT * FROM "+DB_NAME+"."+"Tarjeta WHERE idTarjeta='"+cardId+"'";
+		String query = "SELECT * FROM "+DB_NAME+"."+"tarjeta WHERE idTarjeta='"+cardId+"'";
 		Card result = new Card();
 		try {
 			stmt = conn.prepareStatement(query);

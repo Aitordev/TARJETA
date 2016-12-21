@@ -61,9 +61,9 @@ public class Card {
 		DataBaseOperations.exchange(nick, premio);
 	}
 	
-	public static void getMyPoints(String nick) throws Exception{
+	public static String getMyPoints(String nick) throws Exception{
 		checkStringNotNull(nick);
-		DataBaseOperations.getCardPoints(nick);
+		return ""+DataBaseOperations.getCardPoints(nick);
 	}
 	
 	private static void checkStringNotNull(String str1) throws Exception{

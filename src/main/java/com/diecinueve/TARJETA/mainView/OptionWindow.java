@@ -61,12 +61,14 @@ public class OptionWindow extends CustomComponent implements View {
 			public void buttonClick(ClickEvent event) {
 				String nameButton = event.getButton().getCaption();
 				Window w = new Window(nameButton);
-				Label l = new Label("REally?");
+				Label l = new Label("Really?");
 				Button accept = new Button("Accept");
 				Button cancel = new Button("Cancel");
 				HorizontalLayout j = new HorizontalLayout(l);
 				HorizontalLayout h = new HorizontalLayout(accept,cancel);
+				h.setSpacing(true);
 				VerticalLayout v = new VerticalLayout(j,h);
+				v.setMargin(new MarginInfo(true, true, true, true));
 				accept.addClickListener(new ClickListener() {
 					private static final long serialVersionUID = -2984165706585825647L;
 

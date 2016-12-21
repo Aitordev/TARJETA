@@ -1,6 +1,7 @@
 package com.diecinueve.TARJETA.mainView;
 
 import com.diecinueve.TARJETA.Classes.Card;
+import com.diecinueve.TARJETA.Classes.Informs;
 import com.diecinueve.TARJETA.Classes.User;
 import com.diecinueve.TARJETA.login.SimpleLoginView;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -38,6 +39,7 @@ public class MainView extends CustomComponent implements View {
 	private Button misPuntos;
 	private Button misPremios;
 	private Button opciones;
+	private Button monthInfo;
 	private ClickListener newWindowListener;
 	private Layout cosas;
 	private Layout cosas2;
@@ -85,7 +87,8 @@ public class MainView extends CustomComponent implements View {
 					switch (nameButton) {
 					case "My Purchases":
 						TextArea pur = new TextArea();
-						pur.setValue("lista");//TODO
+						pur.setValue(Informs.informPurchases(nick.getValue()));//TODO
+						cosas.addComponent(pur);
 						buttons.addComponent(accept);
 						break;
 					case "My Tarjeta":
@@ -99,19 +102,31 @@ public class MainView extends CustomComponent implements View {
 								cosas2.removeAllComponents();
 								HorizontalLayout buttons = new HorizontalLayout();
 								w2 = new Window();
+								Card tar = null;
+								try {
+									tar = Card.getCardData(nick.getValue());
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
 								buttons.setSpacing(true);
 								buttons.addComponent(modify);
 								buttons.addComponent(cancel);
 								TextField nombre = new TextField();//TODO
+								if (tar != null) nombre.setValue(tar.fullName);
 								nombre.setCaption("Nombre: ");
 								nombre.setIcon(FontAwesome.CREDIT_CARD);
 								TextField telefono = new TextField();//TODO
+								if (tar != null) telefono.setValue(tar.phone);
+
 								telefono.setIcon(FontAwesome.PHONE);
 								telefono.setCaption("Telefono: ");
 								TextField dir = new TextField();//TODO
+								if (tar != null) dir.setValue(tar.adress);
+
 								dir.setIcon(FontAwesome.TRIPADVISOR);
 								dir.setCaption("Direccion: ");
 								TextField email = new TextField();//TODO
+								if (tar != null) email.setValue(tar.mail);
 								email.setIcon(FontAwesome.MAIL_FORWARD);
 								email.setCaption("Email: ");
 								cosas2.addComponent(nombre);
@@ -269,7 +284,12 @@ public class MainView extends CustomComponent implements View {
 						nick.setCaption("Nick: ");
 						nick.setIcon(FontAwesome.USER);
 						nick.setReadOnly(true);
-						TextField tarjeta = new TextField(/*User.getCardId(nick.getValue())*/);//TODO
+						TextField tarjeta = new TextField();
+						try {
+							tarjeta.setValue(""+User.getCardId(nick.getValue()));
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 						tarjeta.setCaption("Nª Tarjeta: ");
 						tarjeta.setIcon(FontAwesome.CREDIT_CARD);
 						tarjeta.setReadOnly(true);
@@ -296,7 +316,12 @@ public class MainView extends CustomComponent implements View {
 						buttons.addComponent(cancel);
 						break;
 					case "My Points":
-						TextField poi = new TextField(/*Prize.getMyPoints(nick.getValue()) */);//TODO
+						TextField poi = new TextField();
+						try {
+							poi.setValue(Card.getMyPoints(nick.getValue()));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 						poi.setIcon(FontAwesome.UPLOAD);
 						poi.setCaption("Points: ");
 						poi.setReadOnly(true);
@@ -308,6 +333,12 @@ public class MainView extends CustomComponent implements View {
 						Image pb = new Image(null, new ThemeResource("pb.jpg"));
 						cosas.addComponent(pa);
 						cosas.addComponent(pb);
+						buttons.addComponent(accept);
+						break;
+					case "Informe mensual":
+						TextArea in = new TextArea();
+						in.setValue(Informs.informMonthlyUser(nick.getValue()));//TODO
+						cosas.addComponent(pur);
 						buttons.addComponent(accept);
 						break;
 					default:
@@ -344,12 +375,14 @@ public class MainView extends CustomComponent implements View {
 		misPuntos = new Button("My Points");
 		misPremios = new Button("Premios");
 		opciones = new Button("Options");
+		monthInfo = new Button("Informe mensual");
 		misCompras.addClickListener(newWindowListener);
 		miTarjeta.addClickListener(newWindowListener);
 		misDatos.addClickListener(newWindowListener);
 		misPuntos.addClickListener(newWindowListener);
 		misPremios.addClickListener(newWindowListener);
 		opciones.addClickListener(newWindowListener);
+		monthInfo.addClickListener(newWindowListener);
 
 		HorizontalLayout tittle = new HorizontalLayout();
 		HorizontalLayout body = new HorizontalLayout();
