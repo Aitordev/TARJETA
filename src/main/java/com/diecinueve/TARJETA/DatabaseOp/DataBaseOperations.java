@@ -336,7 +336,7 @@ public class DataBaseOperations {
 
 	public static String ShopInform(){
 		connect();
-		String query = "SELECT * FROM tarjeta.tienda;";
+		String query = "SELECT * FROM "+DB_NAME+".tienda;";
 		String result = "IdTienda, Nombre \n";
 		try {
 			stmt = conn.prepareStatement(query);
@@ -372,7 +372,7 @@ public class DataBaseOperations {
 	
 	public static String prizesInform(){
 		connect();
-		String query = "SELECT * FROM tarjeta.premios;";
+		String query = "SELECT * FROM "+DB_NAME+".premios;";
 		String result = "IdPremio, Concepto, Cantidad, Puntos Necesarios \n";
 		try {
 			stmt = conn.prepareStatement(query);
@@ -409,7 +409,7 @@ public class DataBaseOperations {
 
 	public static String purchasesInform(){
 		connect();
-		String query = "SELECT compras.idCompras, tarjeta.nombreCompleto, tienda.nombre, compras.importe, compras.date"
+		String query = "SELECT compras.idCompras,tarjeta.nombreCompleto, tienda.nombre, compras.importe, compras.date"
 				+ "	FROM "+DB_NAME+".compras"
 				+ "	INNER JOIN "+DB_NAME+".tarjeta"
 				+ " ON compras.idTarjeta=tarjeta.idTarjeta"
