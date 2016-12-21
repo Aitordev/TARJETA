@@ -338,7 +338,7 @@ public class MainView extends CustomComponent implements View {
 					case "Informe mensual":
 						TextArea in = new TextArea();
 						in.setValue(Informs.informMonthlyUser(nick.getValue()));//TODO
-						cosas.addComponent(pur);
+						cosas.addComponent(in);
 						buttons.addComponent(accept);
 						break;
 					default:

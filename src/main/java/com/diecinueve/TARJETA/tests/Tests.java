@@ -124,9 +124,17 @@ public class Tests {
 //			System.out.println("TU19");
 //			System.out.println(Informs.informCard());
 //			
-			System.out.println("TU20");
-			System.out.println(Informs.informPurchases());
+//			System.out.println("TU20");
+//			System.out.println(Informs.informPurchases());
+//			
+//			System.out.println("TU21");
+//			System.out.println(Informs.informExchanges());
 			
+//			System.out.println("TU23");
+//			System.out.println(Informs.informMonthlyUser("pruebaUser"));
+			
+			System.out.println("TU24");
+			System.out.println(Informs.informMonthlyAdmin());
 			
 			
 		} catch (Exception e) {
